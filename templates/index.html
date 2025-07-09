@@ -3,164 +3,230 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Full Scientific Calculator</title>
+  <title>Scientific Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <style>
-    .btn-purple {
-      background-color: #8b5cf6;
-      border-color: #8b5cf6;
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'calc-bg': '#1a1a2e',
+            'calc-secondary': '#16213e',
+            'calc-accent': '#0f3460',
+            'calc-primary': '#533483',
+          }
+        }
+      }
     }
-    .btn-purple:hover {
-      background-color: #7c3aed;
-      border-color: #7c3aed;
-    }
-    .calc-btn {
-      height: 50px;
-      font-size: 14px;
-      font-weight: 600;
-      border: 1px solid #e5e7eb;
-      margin: 1px;
-    }
-    .calc-btn-wide {
-      grid-column: span 2;
-    }
-  </style>
+  </script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-  <div class="bg-white shadow-xl rounded-xl p-6 w-full max-w-4xl">
-    <h1 class="text-2xl font-bold text-center text-gray-800 mb-4">
-      <i class="fas fa-calculator text-indigo-600 mr-2"></i>Full Scientific Calculator
-    </h1>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 w-full max-w-5xl shadow-2xl border border-white/20">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white mb-2">
+        <i class="fas fa-calculator text-purple-400 mr-3"></i>Scientific Calculator
+      </h1>
+      <p class="text-gray-300 text-sm">Advanced mathematical operations</p>
+    </div>
 
-    <input type="text" id="display" class="form-control text-end text-xl mb-4 bg-gray-100 font-mono" disabled/>
+    <!-- Display -->
+    <div class="bg-black/30 rounded-xl p-4 mb-6 border border-white/10">
+      <input type="text" id="display" 
+             class="w-full bg-transparent text-white text-right text-3xl font-mono outline-none placeholder-gray-500" 
+             placeholder="0" disabled/>
+    </div>
 
-    <!-- Button Grid -->
-    <div class="grid grid-cols-8 gap-1 text-white text-sm">
-      <!-- Row 1: Memory and Clear Controls -->
-      <button onclick="memoryClear()" class="btn btn-secondary calc-btn">MC</button>
-      <button onclick="memoryRecall()" class="btn btn-secondary calc-btn">MR</button>
-      <button onclick="memoryAdd()" class="btn btn-secondary calc-btn">M+</button>
-      <button onclick="memorySubtract()" class="btn btn-secondary calc-btn">M−</button>
-      <button onclick="clearEntry()" class="btn btn-danger calc-btn">CE</button>
-      <button onclick="allClear()" class="btn btn-danger calc-btn">AC</button>
-      <button onclick="backspace()" class="btn btn-warning calc-btn"><i class="fas fa-backspace"></i></button>
-      <button onclick="toggleSign()" class="btn btn-warning calc-btn">±</button>
+    <!-- Calculator Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      
+      <!-- Scientific Functions Panel -->
+      <div class="lg:col-span-3">
+        <h3 class="text-white text-lg font-semibold mb-3">Scientific Functions</h3>
+        <div class="grid grid-cols-6 sm:grid-cols-8 gap-2 mb-4">
+          <!-- Memory Functions -->
+          <button onclick="memoryClear()" class="calc-btn bg-red-500 hover:bg-red-600">MC</button>
+          <button onclick="memoryRecall()" class="calc-btn bg-red-500 hover:bg-red-600">MR</button>
+          <button onclick="memoryAdd()" class="calc-btn bg-red-500 hover:bg-red-600">M+</button>
+          <button onclick="memorySubtract()" class="calc-btn bg-red-500 hover:bg-red-600">M−</button>
+          <button onclick="clearEntry()" class="calc-btn bg-red-600 hover:bg-red-700">CE</button>
+          <button onclick="allClear()" class="calc-btn bg-red-600 hover:bg-red-700">AC</button>
+          <button onclick="backspace()" class="calc-btn bg-orange-500 hover:bg-orange-600">
+            <i class="fas fa-backspace"></i>
+          </button>
+          <button onclick="toggleSign()" class="calc-btn bg-orange-500 hover:bg-orange-600">±</button>
+          
+          <!-- Trigonometric Functions -->
+          <button onclick="appendFunc('Math.sin(')" class="calc-btn bg-blue-500 hover:bg-blue-600">sin</button>
+          <button onclick="appendFunc('Math.cos(')" class="calc-btn bg-blue-500 hover:bg-blue-600">cos</button>
+          <button onclick="appendFunc('Math.tan(')" class="calc-btn bg-blue-500 hover:bg-blue-600">tan</button>
+          <button onclick="appendFunc('Math.asin(')" class="calc-btn bg-blue-600 hover:bg-blue-700">asin</button>
+          <button onclick="appendFunc('Math.acos(')" class="calc-btn bg-blue-600 hover:bg-blue-700">acos</button>
+          <button onclick="appendFunc('Math.atan(')" class="calc-btn bg-blue-600 hover:bg-blue-700">atan</button>
+          <button onclick="appendFunc('Math.sinh(')" class="calc-btn bg-indigo-500 hover:bg-indigo-600">sinh</button>
+          <button onclick="appendFunc('Math.cosh(')" class="calc-btn bg-indigo-500 hover:bg-indigo-600">cosh</button>
+          
+          <!-- Logarithmic and Power Functions -->
+          <button onclick="appendFunc('Math.tanh(')" class="calc-btn bg-indigo-500 hover:bg-indigo-600">tanh</button>
+          <button onclick="appendFunc('Math.log(')" class="calc-btn bg-green-500 hover:bg-green-600">ln</button>
+          <button onclick="appendFunc('Math.log10(')" class="calc-btn bg-green-500 hover:bg-green-600">log</button>
+          <button onclick="appendFunc('Math.pow(10,')" class="calc-btn bg-green-600 hover:bg-green-700">10^x</button>
+          <button onclick="appendFunc('Math.exp(')" class="calc-btn bg-green-600 hover:bg-green-700">e^x</button>
+          <button onclick="appendFunc('Math.sqrt(')" class="calc-btn bg-green-600 hover:bg-green-700">√</button>
+          <button onclick="appendFunc('Math.pow(')" class="calc-btn bg-green-700 hover:bg-green-800">x^y</button>
+          <button onclick="appendFunc('Math.abs(')" class="calc-btn bg-green-700 hover:bg-green-800">|x|</button>
+          
+          <!-- Constants and Special Functions -->
+          <button onclick="appendConst('Math.PI')" class="calc-btn bg-purple-500 hover:bg-purple-600">π</button>
+          <button onclick="appendConst('Math.E')" class="calc-btn bg-purple-500 hover:bg-purple-600">e</button>
+          <button onclick="appendFunc('factorial(')" class="calc-btn bg-purple-600 hover:bg-purple-700">x!</button>
+          <button onclick="appendFunc('choose(')" class="calc-btn bg-yellow-500 hover:bg-yellow-600">nCr</button>
+          <button onclick="appendFunc('perm(')" class="calc-btn bg-yellow-500 hover:bg-yellow-600">nPr</button>
+          <button onclick="appendFunc('degToRad(')" class="calc-btn bg-purple-600 hover:bg-purple-700">°→rad</button>
+          <button onclick="appendFunc('radToDeg(')" class="calc-btn bg-purple-600 hover:bg-purple-700">rad→°</button>
+          <button onclick="appendFunc('Math.random()')" class="calc-btn bg-pink-500 hover:bg-pink-600">rand</button>
+        </div>
+      </div>
 
-      <!-- Row 2: Trig Functions -->
-      <button onclick="appendFunc('Math.sin(')" class="btn btn-primary calc-btn">sin</button>
-      <button onclick="appendFunc('Math.cos(')" class="btn btn-primary calc-btn">cos</button>
-      <button onclick="appendFunc('Math.tan(')" class="btn btn-primary calc-btn">tan</button>
-      <button onclick="appendFunc('Math.asin(')" class="btn btn-primary calc-btn">asin</button>
-      <button onclick="appendFunc('Math.acos(')" class="btn btn-primary calc-btn">acos</button>
-      <button onclick="appendFunc('Math.atan(')" class="btn btn-primary calc-btn">atan</button>
-      <button onclick="appendFunc('Math.sinh(')" class="btn btn-primary calc-btn">sinh</button>
-      <button onclick="appendFunc('Math.cosh(')" class="btn btn-primary calc-btn">cosh</button>
+      <!-- Basic Calculator Panel -->
+      <div class="lg:col-span-1">
+        <h3 class="text-white text-lg font-semibold mb-3">Basic Operations</h3>
+        <div class="grid grid-cols-4 gap-2">
+          <!-- Parentheses and operators -->
+          <button onclick="append('(')" class="calc-btn bg-gray-600 hover:bg-gray-700">(</button>
+          <button onclick="append(')')" class="calc-btn bg-gray-600 hover:bg-gray-700">)</button>
+          <button onclick="append('%')" class="calc-btn bg-gray-600 hover:bg-gray-700">%</button>
+          <button onclick="append('/')" class="calc-btn bg-orange-500 hover:bg-orange-600">÷</button>
+          
+          <!-- Numbers Row 1 -->
+          <button onclick="append('7')" class="calc-btn-number">7</button>
+          <button onclick="append('8')" class="calc-btn-number">8</button>
+          <button onclick="append('9')" class="calc-btn-number">9</button>
+          <button onclick="append('*')" class="calc-btn bg-orange-500 hover:bg-orange-600">×</button>
+          
+          <!-- Numbers Row 2 -->
+          <button onclick="append('4')" class="calc-btn-number">4</button>
+          <button onclick="append('5')" class="calc-btn-number">5</button>
+          <button onclick="append('6')" class="calc-btn-number">6</button>
+          <button onclick="append('-')" class="calc-btn bg-orange-500 hover:bg-orange-600">−</button>
+          
+          <!-- Numbers Row 3 -->
+          <button onclick="append('1')" class="calc-btn-number">1</button>
+          <button onclick="append('2')" class="calc-btn-number">2</button>
+          <button onclick="append('3')" class="calc-btn-number">3</button>
+          <button onclick="append('+')" class="calc-btn bg-orange-500 hover:bg-orange-600">+</button>
+          
+          <!-- Bottom Row -->
+          <button onclick="append('0')" class="calc-btn-number col-span-2">0</button>
+          <button onclick="append('.')" class="calc-btn-number">.</button>
+          <button onclick="calculate()" class="calc-btn bg-green-500 hover:bg-green-600 font-bold">=</button>
+        </div>
+      </div>
+    </div>
 
-      <!-- Row 3: More functions -->
-      <button onclick="appendFunc('Math.tanh(')" class="btn btn-primary calc-btn">tanh</button>
-      <button onclick="appendFunc('Math.log(')" class="btn btn-success calc-btn">ln</button>
-      <button onclick="appendFunc('Math.log10(')" class="btn btn-success calc-btn">log</button>
-      <button onclick="appendFunc('Math.pow(10,')" class="btn btn-success calc-btn">10^x</button>
-      <button onclick="appendFunc('Math.exp(')" class="btn btn-success calc-btn">e^x</button>
-      <button onclick="appendFunc('Math.sqrt(')" class="btn btn-success calc-btn">√</button>
-      <button onclick="appendFunc('root(')" class="btn btn-success calc-btn">ʸ√x</button>
-      <button onclick="appendFunc('Math.abs(')" class="btn btn-success calc-btn">|x|</button>
-
-      <!-- Row 4: Constants and conversions -->
-      <button onclick="appendConst('Math.PI')" class="btn btn-purple calc-btn">π</button>
-      <button onclick="appendConst('Math.E')" class="btn btn-purple calc-btn">e</button>
-      <button onclick="appendConst('(1+Math.sqrt(5))/2')" class="btn btn-purple calc-btn">φ</button>
-      <button onclick="appendFunc('degToRad(')" class="btn btn-purple calc-btn">°→rad</button>
-      <button onclick="appendFunc('radToDeg(')" class="btn btn-purple calc-btn">rad→°</button>
-      <button onclick="appendFunc('Math.random()')" class="btn btn-purple calc-btn">rand</button>
-      <button onclick="append('%')" class="btn btn-purple calc-btn">%</button>
-      <button onclick="appendFunc('factorial(')" class="btn btn-info calc-btn">x!</button>
-
-      <!-- Row 5: Combinations/Permutations and parentheses -->
-      <button onclick="appendFunc('choose(')" class="btn btn-warning calc-btn">nCr</button>
-      <button onclick="appendFunc('perm(')" class="btn btn-warning calc-btn">nPr</button>
-      <button onclick="append('(')" class="btn btn-dark calc-btn">(</button>
-      <button onclick="append(')')" class="btn btn-dark calc-btn">)</button>
-      <button onclick="append('7')" class="btn btn-dark calc-btn">7</button>
-      <button onclick="append('8')" class="btn btn-dark calc-btn">8</button>
-      <button onclick="append('9')" class="btn btn-dark calc-btn">9</button>
-      <button onclick="append('/')" class="btn btn-danger calc-btn">÷</button>
-
-      <!-- Row 6: Numbers and operators -->
-      <button onclick="append('^')" class="btn btn-success calc-btn">x^y</button>
-      <button onclick="append('**')" class="btn btn-success calc-btn">**</button>
-      <button onclick="append('mod')" class="btn btn-info calc-btn">mod</button>
-      <button onclick="append(',')" class="btn btn-dark calc-btn">,</button>
-      <button onclick="append('4')" class="btn btn-dark calc-btn">4</button>
-      <button onclick="append('5')" class="btn btn-dark calc-btn">5</button>
-      <button onclick="append('6')" class="btn btn-dark calc-btn">6</button>
-      <button onclick="append('*')" class="btn btn-danger calc-btn">×</button>
-
-      <!-- Row 7: More numbers -->
-      <button onclick="append('1')" class="btn btn-dark calc-btn">1</button>
-      <button onclick="append('2')" class="btn btn-dark calc-btn">2</button>
-      <button onclick="append('3')" class="btn btn-dark calc-btn">3</button>
-      <button onclick="append('-')" class="btn btn-danger calc-btn">−</button>
-      <button onclick="append('0')" class="btn btn-dark calc-btn calc-btn-wide">0</button>
-      <button onclick="append('.')" class="btn btn-dark calc-btn">.</button>
-      <button onclick="calculate()" class="btn btn-success calc-btn">=</button>
-      <button onclick="append('+')" class="btn btn-danger calc-btn">+</button>
+    <!-- History Panel -->
+    <div class="mt-6 bg-black/20 rounded-xl p-4 border border-white/10">
+      <h3 class="text-white text-sm font-semibold mb-2">Recent Calculations</h3>
+      <div id="history" class="text-gray-300 text-sm max-h-20 overflow-y-auto"></div>
     </div>
   </div>
 
+  <style>
+    .calc-btn {
+      @apply h-12 px-3 py-2 text-white text-sm font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg;
+    }
+    
+    .calc-btn-number {
+      @apply h-12 px-3 py-2 bg-gray-700 hover:bg-gray-600 text-white text-lg font-bold rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg;
+    }
+    
+    .calc-btn:active {
+      @apply shadow-inner;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .calc-btn {
+        @apply h-10 text-xs;
+      }
+      .calc-btn-number {
+        @apply h-10 text-base;
+      }
+    }
+  </style>
+
   <script>
     let display = document.getElementById("display");
+    let history = document.getElementById("history");
     let memory = 0;
+    let calculations = [];
 
     function append(val) {
-      display.value += val;
+      if (display.value === "0" || display.value === "Error") {
+        display.value = val;
+      } else {
+        display.value += val;
+      }
     }
 
     function appendFunc(f) {
-      display.value += f;
+      if (display.value === "0" || display.value === "Error") {
+        display.value = f;
+      } else {
+        display.value += f;
+      }
     }
 
     function appendConst(c) {
-      display.value += c;
+      if (display.value === "0" || display.value === "Error") {
+        display.value = c;
+      } else {
+        display.value += c;
+      }
     }
 
     function clearEntry() {
-      display.value = '';
+      display.value = "0";
     }
 
     function allClear() {
-      display.value = '';
+      display.value = "0";
       memory = 0;
+      calculations = [];
+      updateHistory();
     }
 
     function backspace() {
-      display.value = display.value.slice(0, -1);
+      if (display.value.length > 1) {
+        display.value = display.value.slice(0, -1);
+      } else {
+        display.value = "0";
+      }
     }
 
     function toggleSign() {
-      if (display.value) {
+      if (display.value !== "0" && display.value !== "Error") {
         display.value = display.value.startsWith('-') ? display.value.slice(1) : '-' + display.value;
       }
     }
 
     function memoryAdd() {
       try { 
-        let result = eval(display.value);
+        let result = eval(prepareExpression(display.value));
         memory += result;
       } catch {}
     }
 
     function memorySubtract() {
       try { 
-        let result = eval(display.value);
+        let result = eval(prepareExpression(display.value));
         memory -= result;
       } catch {}
     }
 
     function memoryRecall() {
-      display.value += memory;
+      display.value = memory.toString();
     }
 
     function memoryClear() {
@@ -195,43 +261,63 @@
       return rad * (180 / Math.PI);
     }
 
-    function root(x, y) {
-      return Math.pow(x, 1 / y);
+    function prepareExpression(expr) {
+      return expr
+        .replace(/(\d+)!/g, (match, n) => factorial(Number(n)))
+        .replace(/%/g, '*0.01')
+        .replace(/÷/g, '/')
+        .replace(/×/g, '*')
+        .replace(/−/g, '-');
     }
 
     function calculate() {
       try {
-        let expr = display.value
-          .replace(/(\d+)!/g, (match, n) => factorial(Number(n)))
-          .replace(/%/g, '*0.01')
-          .replace(/÷/g, '/')
-          .replace(/×/g, '*')
-          .replace(/\^/g, '**')
-          .replace(/mod/g, '%');
-        
+        let originalExpr = display.value;
+        let expr = prepareExpression(originalExpr);
         let result = eval(expr);
-        display.value = result;
+        
+        // Round to prevent floating point issues
+        result = Math.round(result * 1000000000000) / 1000000000000;
+        
+        // Add to history
+        calculations.unshift(`${originalExpr} = ${result}`);
+        if (calculations.length > 5) calculations.pop();
+        updateHistory();
+        
+        display.value = result.toString();
       } catch (e) {
         display.value = 'Error';
       }
     }
 
-    // Keyboard support
+    function updateHistory() {
+      history.innerHTML = calculations.map(calc => 
+        `<div class="py-1 border-b border-gray-600 last:border-b-0">${calc}</div>`
+      ).join('');
+    }
+
+    // Enhanced keyboard support
     document.addEventListener("keydown", (e) => {
+      e.preventDefault();
       const key = e.key;
-      if (/\d|\+|\-|\*|\/|\(|\)|\.|%/.test(key)) {
-        append(key);
-      }
-      if (key === "Enter" || key === "=") {
-        calculate();
-      }
-      if (key === "Backspace") {
-        backspace();
-      }
-      if (key === "Delete" || key === "Escape") {
-        clearEntry();
-      }
+      
+      if (/\d/.test(key)) append(key);
+      else if (key === '.') append('.');
+      else if (key === '+') append('+');
+      else if (key === '-') append('-');
+      else if (key === '*') append('*');
+      else if (key === '/') append('/');
+      else if (key === '(') append('(');
+      else if (key === ')') append(')');
+      else if (key === '%') append('%');
+      else if (key === "Enter" || key === "=") calculate();
+      else if (key === "Backspace") backspace();
+      else if (key === "Delete" || key === "Escape") clearEntry();
+      else if (key === "c" || key === "C") allClear();
     });
+
+    // Initialize
+    display.value = "0";
   </script>
 </body>
 </html>
